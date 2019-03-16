@@ -1,6 +1,7 @@
 package com.oshosanya.jdownload.repository;
 
 import com.oshosanya.jdownload.constant.DownloadStatus;
+import com.oshosanya.jdownload.entity.ChildDownload;
 import com.oshosanya.jdownload.entity.Download;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DownloadRepository extends CrudRepository<Download, Integer> {
-    List<Download> findByStatusAndDone(DownloadStatus status, boolean done);
+public interface ChildDownloadRepository extends CrudRepository<ChildDownload, Integer> {
+    List<ChildDownload> findByDoneAndDownload(boolean done, Download download);
 
-    List<Download> findByDone(boolean done);
+    List<ChildDownload> findByDone(boolean done);
 }

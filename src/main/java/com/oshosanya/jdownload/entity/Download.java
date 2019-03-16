@@ -1,12 +1,10 @@
 package com.oshosanya.jdownload.entity;
 
-import javax.persistence.*;
-import java.util.List;
+import com.oshosanya.jdownload.constant.DownloadStatus;
 
-enum DownloadStatus
-{
-    READY, RUNNING, COMPLETED;
-}
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.Observable;
 
 @Entity
 public class Download {
@@ -18,11 +16,14 @@ public class Download {
     private int BytesDownloaded;
     private int ContentLength;
 
-    @OneToMany(mappedBy = "download", fetch = FetchType.EAGER)
-    private List<ChildDownload> childDownloads;
+    @OneToMany(mappedBy = "download", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Collection<ChildDownload> childDownloads;
 
     @Enumerated(EnumType.STRING)
-    private DownloadStatus Status;
+    @Column(name="status")
+    private DownloadStatus status = DownloadStatus.READY;
+
+    private boolean done = false;
 
     public Download() {}
 
@@ -32,6 +33,7 @@ public class Download {
         this.BytesDownloaded = 0;
         this.ContentLength = ContentLength;
     }
+
     public int getId() {
         return Id;
     }
@@ -73,18 +75,26 @@ public class Download {
     }
 
     public DownloadStatus getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(DownloadStatus status) {
-        Status = status;
+        this.status = status;
     }
 
-    public List<ChildDownload> getChildDownloads() {
+    public Collection<ChildDownload> getChildDownloads() {
         return childDownloads;
     }
 
-    public void setChildDownloads(List<ChildDownload> childDownloads) {
+    public void setChildDownloads(Collection<ChildDownload> childDownloads) {
         this.childDownloads = childDownloads;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

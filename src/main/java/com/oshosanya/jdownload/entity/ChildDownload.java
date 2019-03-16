@@ -1,5 +1,7 @@
 package com.oshosanya.jdownload.entity;
 
+import com.oshosanya.jdownload.constant.DownloadStatus;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,8 +16,10 @@ public class ChildDownload {
     private String FileName;
 
     @ManyToOne
-    @JoinColumn(name="download_id")
+    @JoinColumn(name="download_id", nullable=false)
     private Download download;
+
+    private boolean done = false;
 
     public int getId() {
         return Id;
@@ -63,5 +67,13 @@ public class ChildDownload {
 
     public void setDownload(Download download) {
         this.download = download;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 }

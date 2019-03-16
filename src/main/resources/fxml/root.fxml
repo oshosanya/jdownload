@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <VBox layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <MenuBar>
+          <menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Close" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Delete" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="About" />
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+        <HBox prefHeight="24.0" prefWidth="580.0">
+          <children>
+            <Button id="modDownload" mnemonicParsing="false" onAction="#handleModDownload" text="Mod Download" />
+          </children>
+          <VBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </VBox.margin>
+        </HBox>
+        <TableView fx:id="downloadsTable" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" tableMenuButtonVisible="false" VBox.vgrow="NEVER">
+          <columns>
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="239.0" text="File Name" fx:id="name" />
+            <TableColumn prefWidth="75.0" text="Size" fx:id="size" />
+            <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="110.0" text="Status" fx:id="status" />
+            <TableColumn prefWidth="75.0" text="Progress" fx:id="progress" />
+          </columns>
+        </TableView>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>
