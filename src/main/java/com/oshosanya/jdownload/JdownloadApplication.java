@@ -2,16 +2,9 @@ package com.oshosanya.jdownload;
 
 import com.oshosanya.jdownload.ui.JdownloadUI;
 import com.sun.javafx.application.PlatformImpl;
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -25,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class JdownloadApplication implements CommandLineRunner {
 
 	@Autowired
-	private DownloadTask downloadTask;
+	private Downloader downloader;
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -62,13 +55,13 @@ public class JdownloadApplication implements CommandLineRunner {
 				}
 			});
 		});
-		try {
-			Thread.sleep(5000);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			Thread.sleep(5000);
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//		}
 		Future core = executor.submit(() -> {
-			downloadTask.start(args);
+			downloader.start(args);
 		});
 
 		try {
