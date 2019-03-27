@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane id="rootContainer" prefHeight="500.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
     <VBox layoutX="0.0" layoutY="0.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>
@@ -32,7 +32,7 @@
         </MenuBar>
         <HBox prefHeight="24.0" prefWidth="580.0">
           <children>
-            <Button id="modDownload" mnemonicParsing="false" onAction="#handleModDownload" text="Mod Download" />
+            <Button id="modDownload" mnemonicParsing="false" onAction="#handleAddDownload" text="Add Download" />
           </children>
           <VBox.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

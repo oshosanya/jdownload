@@ -53,6 +53,8 @@ public class DownloadTask {
     public void setDownload(Download download) {
         this.download = download;
         this.childDownloads = download.getChildDownloads();
+        System.out.println("Child download size");
+        System.out.println(this.childDownloads.size());
     }
 
     public void startDownload() {
@@ -72,9 +74,9 @@ public class DownloadTask {
         this.childDownloads.forEach(childDownload -> {
             try {
                 this.downloadQueue.put(childDownload);
+                System.out.println("Added child to queue");
             } catch (Exception e) {
-                //Do not do anything, just move on
-//                System.out.printf("Queue threw exception: %s \n", e.getMessage());
+                System.out.printf("Queue threw exception: %s \n", e.getMessage());
             }
         });
     }
@@ -83,12 +85,16 @@ public class DownloadTask {
         ThreadPoolExecutor workers = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_WORKERS);
         while (true) {
             try {
+//                System.out.println("Polling");
+//                System.out.println(this.downloadQueue.remainingCapacity());
                 ChildDownload childDownload = this.downloadQueue.poll(2L, TimeUnit.SECONDS);
                 if (childDownload == null) {
                     continue;
                 }
                 childDownloadRepository.save(childDownload);
+                System.out.println("Polling queue");
                 Future worker = workers.submit(() -> {
+                    System.out.println("Getting child from url");
                     this.getFileFromUrl(childDownload);
                 });
                 this.workers.add(worker);

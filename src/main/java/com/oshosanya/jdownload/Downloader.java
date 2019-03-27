@@ -46,13 +46,10 @@ public class Downloader {
     }
 
     public void start(String... args) {
-        Iterable<Download> downloads = downloadRepository.findAll();
+//        Iterable<Download> downloads = downloadRepository.findAll();
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
-        downloads.forEach(download -> {
-            this.addDownload(download);
-        });
-//        Future ui = executor.submit(() -> {
-//            Application.launch(JdownloadUI.class, args);
+//        downloads.forEach(download -> {
+//            this.addDownload(download);
 //        });
         Future populateQueue = executor.submit(() -> {
             this.populateQueue();
@@ -62,7 +59,6 @@ public class Downloader {
         });
 
         try {
-//            ui.get();
             //TODO perform graceful shutdown
 //            System.exit(1);
             populateQueue.get();
@@ -86,6 +82,7 @@ public class Downloader {
 
         while (true) {
             List<Download> otherDownloads = downloadRepository.findByStatusAndDone(DownloadStatus.READY, false);
+
             otherDownloads.forEach(download -> {
                 try {
                     this.downloadQueue.offer(download, 1, TimeUnit.SECONDS);
@@ -113,7 +110,6 @@ public class Downloader {
                 if (download == null) {
                     continue;
                 }
-                System.out.println("Creating task");
                 workers.submit(() -> {
                     DownloadTask downloadTask = (DownloadTask) context.getBean("downloadTaskPrototype");
                     downloadTask.setDownload(download);
@@ -121,29 +117,27 @@ public class Downloader {
                 });
             } catch (Exception e) {
 //                logger.error(e);
-                e.printStackTrace();
+//                e.printStackTrace();
                 System.exit(0);
                 System.out.printf("Queue threw exception: %s \n", e.getLocalizedMessage());
             }
         }
     }
 
-    private void addDownload(Download download) {
-        try {
-            URL url = new URL(download.getUrl());
-            HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
-            httpConnection.setRequestMethod("HEAD");
-            long contentLength = httpConnection.getContentLengthLong();
-            download.setContentLength((int)contentLength);
-            downloadRepository.save(download);
-            ArrayList<Map> limits;
-            limits = getUpperAndLowerDownloadLimits(contentLength);
-            this.createChildDownloads(download, limits, url);
-
-        } catch (Exception e) {
-            System.out.println("Could not connect to server");
-            System.out.println(e.getMessage());
-        }
+    public Download addDownload(Download download) throws Exception {
+        URL url = new URL(download.getUrl());
+        HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+        httpConnection.setRequestMethod("HEAD");
+        long contentLength = httpConnection.getContentLengthLong();
+        download.setContentLength((int)contentLength);
+        download.setFileName(FilenameUtils.getName(url.getPath()));
+        downloadRepository.save(download);
+        ArrayList<Map> limits;
+        limits = getUpperAndLowerDownloadLimits(contentLength);
+        this.createChildDownloads(download, limits, url);
+        download.setStatus(DownloadStatus.READY);
+        downloadRepository.save(download);
+        return download;
     }
 
     private void createChildDownloads(Download download, ArrayList<Map> limits, URL url) {

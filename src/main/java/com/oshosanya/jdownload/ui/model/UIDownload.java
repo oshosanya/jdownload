@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class UIDownload {
     public SimpleStringProperty fileName = new SimpleStringProperty();
-    public SimpleIntegerProperty size = new SimpleIntegerProperty();
+    public SimpleStringProperty size = new SimpleStringProperty();
     public SimpleStringProperty status = new SimpleStringProperty();
     public SimpleDoubleProperty progress = new SimpleDoubleProperty();
 
@@ -22,15 +22,15 @@ public class UIDownload {
         this.fileName.set(fileName);
     }
 
-    public int getSize() {
-        return size.get();
-    }
-
-    public SimpleIntegerProperty sizeProperty() {
+    public SimpleStringProperty getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public SimpleStringProperty sizeProperty() {
+        return size;
+    }
+
+    public void setSize(String size) {
         this.size.set(size);
     }
 
